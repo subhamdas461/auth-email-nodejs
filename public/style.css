@@ -1,0 +1,44 @@
+:root{
+    --bg-light : rgb(230, 230, 230) ;
+}
+body{
+    background-color: #313131 !important;
+   
+}
+.fa-user-circle{
+    color: rgb(68, 68, 68);
+    font-size: 20px !important;
+    line-height: 40px !important;
+    width: 40px;
+    cursor: pointer;
+}
+header .bg-light{
+    background-color: var(--bg-light) !important;
+}
+header a{
+    color: rgb(97, 97, 97);
+}
+ul li{
+   margin:0 2px;
+}
+#signup-form{
+    color: rgb(255, 255, 255);
+    border: 1px solid rgb(177, 177, 177);
+    width: 95vmin;
+    margin: 2em auto;
+    padding: 1em;
+    border-radius: 5px;
+    min-width: 300px;
+    background-color: rgb(75, 75, 75);
+}
+#signup-form h1{
+    text-align: center;
+    margin: 0 0 1em 0;
+}
+#signup-form input[type="text"],#signup-form input[type="password"]{
+    background-color: #ffffff;
+}
+#signup-form .form-check{
+    margin: 5px 0;
+    font-size: 14px;
+}
