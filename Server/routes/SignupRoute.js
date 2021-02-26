@@ -1,45 +1,105 @@
 const express = require("express")
 const bcrypt = require("bcryptjs")
 const router = express.Router();
-
+const sgMail = require('@sendgrid/mail')
 const User = require("../models/user")
-
+const { signupValidate } = require("../validation")
 
 router.post("/",async (req,res)=>{
    
+    const {name ,email ,password} = await req.body
+    const testData = {
+        name : checkExtraWhiteSpce(name),
+        email : checkExtraWhiteSpce(email),
+        password : checkExtraWhiteSpce(password)
+    }
+    const {error} = signupValidate(testData);
+    if(error){
+        return res.status(400).json({
+            status : "error",
+            msg : error.details[0].message
+        })
+    }
     
-    const {name ,email ,password:pass} = await req.body
-    console.log(req.body)
-    let password = await bcrypt.hash(pass,7);
-    let user = new User({
-        name,
-        email,
-        password
-    });
+    let hashPass = await bcrypt.hash(password,7);
+   
+    const userData = {
+        name : checkExtraWhiteSpce(name),
+        email : checkExtraWhiteSpce(email),
+        password : hashPass,
+        isVerified: false,
+        timestamp : Date.now()
+    }
+
+    
+    let emailExist = await User.findOne({email : userData.email})
+    if(emailExist) return res.status(400).json({
+        status:"error",
+        msg: "Email already exists!"
+    })
+    // Send verification mail setup
+    sgMail.setApiKey(process.env.SEND_API_KEY)
+
+    const msg = {
+    to: userData.email,
+    from: {
+        name : "JordanHaste.Co",
+        email : "cshadow439@gmail.com"
+    }, 
+    subject: `Verify yoou JH account`,
+    text: `Hello ${userData.name}`,
+    html: `<h2>Verify your account</h2>
+            <p>Press the verify button to verify</p>
+            <button onclick="location.href='https://google.com'">Verify your account</button>`,
+    }
+
+    sgMail
+    .send(msg)
+    .then(() => {
+        console.log('Email sent')
+    })
+    .catch((error) => {
+        console.error("Email not sent : ",error)
+    })
+
+
+ 
+    let user = new User(userData);
     user.save((err,doc)=>{
-        // console.log(JSON.stringify(err))
+       
         try {
             if(err){
                 if(err.code === 11000){
-                    throw new Error("Email already registered");
+                    throw Error(JSON.stringify({
+                        msg : "Email already exists.",
+                        statusCode : 409
+                    }))
                 }
-                throw new Error(err)
+                throw Error(JSON.stringify({
+                    msg : err.message,
+                    statusCode : 400
+                }))
             }
-            console.log("Doc",doc)
+            console.log("Doc : ",doc)
             res.status(201).json({
                 status:"ok",
-                msg:"Saved to db"
+                msg:"Signed up successfully"
             })
             res.end()
         }catch (error) {
-            console.log(error)
-            res.status(400).json({
+            let err = JSON.parse(error.message);
+
+            res.status(err.statusCode).json({
                 status:"error",
-                msg: error.message
+                msg: err.msg
             })
-            res.end()   
         } 
     })
 })
+
+// check for unwanted white spaces
+function checkExtraWhiteSpce(sentence){
+    return sentence.replace(/\s+/g, ' ').trim();
+}
 
 module.exports = router;

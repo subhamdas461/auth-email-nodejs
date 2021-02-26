@@ -25,7 +25,7 @@ app.get('/dashboard', function (req, res, next) {
 }) 
 
 // post signup route
-app.use("/api/signup",signupRoute);
+app.use("/api/user/signup",signupRoute);
 
 const port = process.env.PORT || 5000
 app.listen(port, ()=>{
