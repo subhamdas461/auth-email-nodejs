@@ -13,7 +13,7 @@ showPass.addEventListener("change",(evt)=>{
 })
 submitBtn.addEventListener("click",async (evt)=>{
     try {
-        let res = await fetch("/api/signup",{
+        let res = await fetch("/api/user/signup",{
             method:"POST",
             headers:{
                 "Content-type":"application/json"

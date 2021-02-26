@@ -46,11 +46,12 @@ router.post("/",async (req,res)=>{
         name : "JordanHaste.Co",
         email : "cshadow439@gmail.com"
     }, 
-    subject: `Verify yoou JH account`,
+    subject: `Verify your account`,
     text: `Hello ${userData.name}`,
-    html: `<h2>Verify your account</h2>
+    html: `<p>Hello ${userData.name}</p>
+            <h2>Verify your account</h2>
             <p>Press the verify button to verify</p>
-            <button onclick="location.href='https://google.com'">Verify your account</button>`,
+            <a href="https://www.google.com">Verify</a>`,
     }
 
     sgMail
@@ -62,8 +63,6 @@ router.post("/",async (req,res)=>{
         console.error("Email not sent : ",error)
     })
 
-
- 
     let user = new User(userData);
     user.save((err,doc)=>{
        
