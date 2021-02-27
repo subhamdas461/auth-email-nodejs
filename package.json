@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/subhamdas461/Nodejs-login-signup.git"
+    "url": "git+https://github.com/subhamdas461/auth-email-nodejs.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/subhamdas461/Nodejs-login-signup/issues"
+    "url": "https://github.com/subhamdas461/auth-email-nodejs/issues"
   },
-  "homepage": "https://github.com/subhamdas461/Nodejs-login-signup#readme",
+  "homepage": "https://github.com/subhamdas461/auth-email-nodejs#readme",
   "dependencies": {
     "@sendgrid/mail": "^7.4.2",
     "bcryptjs": "^2.4.3",
