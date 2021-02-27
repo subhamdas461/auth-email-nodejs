@@ -2,7 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const path = require("path");
-const signupRoute = require("./routes/SignupRoute")
+const signupRoute = require("./routes/SignupRoute");
+const morgan = require("morgan");
 require('dotenv').config();
 
 const app = express();
@@ -12,6 +13,8 @@ require("./models/db")
 
 app.use(cors())
 app.use(express.json())
+app.use(morgan("dev"));
+
 app.use(express.static(path.join(__dirname , "../public")))
 // all static public folder
 app.get('/signup', function (req, res, next) { 
