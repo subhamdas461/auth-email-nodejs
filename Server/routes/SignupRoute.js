@@ -2,6 +2,7 @@ const express = require("express")
 const bcrypt = require("bcryptjs")
 const router = express.Router();
 const sgMail = require('@sendgrid/mail')
+const jwt = require('jsonwebtoken')
 const User = require("../models/user")
 const { signupValidate } = require("../validation")
 
@@ -12,7 +13,7 @@ router.post("/",async (req,res)=>{
         email : checkExtraWhiteSpce(email),
         password : checkExtraWhiteSpce(password)
     }
-    const {error} = signupValidate(testData);
+    const {error} =signupValidate(testData);
     if(error){
         return res.status(400).json({
             status : "error",
@@ -28,12 +29,18 @@ router.post("/",async (req,res)=>{
         isVerified: false,
         timestamp : Date.now()
     }
-
+    
+    // Check for duplicate email entry
     let emailExist = await User.findOne({email : userData.email})
-    if(emailExist) return res.status(400).json({
+    if(emailExist) return res.status(409).json({
         status:"error",
         msg: "Email already exists!"
     })
+    let {name:uName, email:uEmail, password: uPass } = userData
+    const token = jwt.sign({uName,uEmail,uPass},process.env.JWT_KEY,{expiresIn: "15m"})
+    console.log(token)
+    // console.log(uName,uPass,uEmail)
+
     // Send verification mail setup
     sgMail.setApiKey(process.env.SEND_API_KEY)
     const msg = {
@@ -46,11 +53,14 @@ router.post("/",async (req,res)=>{
         text: `Hello ${userData.name}`,
         html: `<p>Hello ${userData.name}</p>
                 <h2>Verify your account</h2>
-                <p>Press the verify button to verify</p>
-                <a href="https://www.google.com">Verify</a>`
+                <p>Press the verify button to verify your account</p>
+                <a href="http://${req.headers.host}/verify-account/${token}">Verify</a>
+                <hr>
+                <a href="${req.protocol}://${req.headers.host}/verify-account/${token}">${req.protocol}://${req.headers.host}/verify-account/${token}</a>
+            `    
     }
 
-    sgMail
+    await sgMail
     .send(msg)
     .then(() => {
         console.log('Email sent')
@@ -77,7 +87,7 @@ router.post("/",async (req,res)=>{
             console.log("Doc : ",doc)
             res.status(201).json({
                 status:"ok",
-                msg:"Signed up successfully"
+                msg:`A verification link has been sent to ${doc.email} . Please activate your account`
             })
             res.end()
         }catch (error) {

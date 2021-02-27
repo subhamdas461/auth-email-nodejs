@@ -25,9 +25,21 @@ submitBtn.addEventListener("click",async (evt)=>{
             })
         })
         let response = await res.json()
-        console.log(response,res)
+        if(response.status === "ok"){
+            return Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: response.msg,
+              })
+        }
+        throw Error(response.msg)
     }
     catch (error){
         console.log("ERR",error)
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: error.message,
+          })
     }
 })
