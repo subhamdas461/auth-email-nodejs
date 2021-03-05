@@ -67,6 +67,10 @@ router.post("/",async (req,res)=>{
     })
     .catch((error) => {
         console.error("Email not sent : ",error)
+        res.status(500).json({
+            status:"error",
+            msg: "Email not sent!"
+        })
     })
 
     let user = new User(userData);
@@ -87,7 +91,7 @@ router.post("/",async (req,res)=>{
             console.log("Doc : ",doc)
             res.status(201).json({
                 status:"ok",
-                msg:`A verification link has been sent to ${doc.email} . Please activate your account`
+                msg:`A verification link has been sent to ${doc.email}.`
             })
             res.end()
         }catch (error) {

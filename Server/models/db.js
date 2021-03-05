@@ -17,7 +17,7 @@ try {
 
     db.on('error', (err)=>{
       console.log("Error connecting to DB",err)
-      throw Error("Not connected to database");
+      throw Error(err);
     });
     
     db.once('open', ()=>{
@@ -26,7 +26,7 @@ try {
   
 }
 catch (error) {
-   console.log("Error : ",error)
+   console.log("Error : ",error.message)
 }
 
 require("./user")
