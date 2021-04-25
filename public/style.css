@@ -21,6 +21,8 @@ header a{
 ul li{
    margin:0 2px;
 }
+
+/* Sign Up : -- */
 #signup-form{
     color: rgb(255, 255, 255);
     border: 1px solid rgb(177, 177, 177);
@@ -42,3 +44,39 @@ ul li{
     margin: 5px 0;
     font-size: 14px;
 }
+/* ---------------------- */
+
+/* Login : -- */
+.login_form{
+    margin-top: 100px !important;
+}
+
+.show_forgot{
+    display: flex;
+    justify-content: space-between;
+}
+.forgot_pass{
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+    margin-top: 6px;
+}
+.forgot_pass:hover{
+    color: #fff;
+    text-decoration: underline;
+}
+.signup_link{
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+    padding: 0 5px 3px 5px;
+    text-decoration: none;
+    background-color: #8b7272;
+}
+.signup_link:hover{
+    color: #fff;
+    text-decoration: underline;
+}
+/* ---------------------- */

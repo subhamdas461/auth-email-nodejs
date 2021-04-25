@@ -57,6 +57,7 @@ router.post("/",async (req,res)=>{
                 <a href="http://${req.headers.host}/verify-account/${token}">Verify</a>
                 <hr>
                 <a href="${req.protocol}://${req.headers.host}/verify-account/${token}">${req.protocol}://${req.headers.host}/verify-account/${token}</a>
+                <p>The link will expire in 15 minutes</p>
             `    
     }
 

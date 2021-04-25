@@ -11,6 +11,7 @@ showPass.addEventListener("change",(evt)=>{
     inputs[2].type = "text"
     inputs[3].type = "text"
 })
+
 submitBtn.addEventListener("click",async (evt)=>{
     try {
         let res = await fetch("/api/user/signup",{
