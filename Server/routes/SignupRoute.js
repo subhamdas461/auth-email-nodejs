@@ -21,7 +21,7 @@ router.post("/",async (req,res)=>{
         })
     }
     
-    let hashPass = await bcrypt.hash(password,7);
+    let hashPass = await bcrypt.hash(password,7); 
     const userData = {
         name : checkExtraWhiteSpce(name),
         email : checkExtraWhiteSpce(email),

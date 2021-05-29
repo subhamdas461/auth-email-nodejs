@@ -3,6 +3,7 @@ const cors = require("cors");
 // const mongoose = require("mongoose");
 const path = require("path");
 const signupRoute = require("./routes/SignupRoute");
+const loginRoute = require("./routes/LoginRoute");
 const morgan = require("morgan");
 require('dotenv').config();
 
@@ -37,6 +38,9 @@ app.get('/forgot-password', function (req, res, next) {
 
 // post signup route
 app.use("/api/user/signup",signupRoute);
+
+// post login route
+app.use("/api/user/login",loginRoute);
 
 const port = process.env.PORT || 5000
 app.listen(port, ()=>{
