@@ -21,6 +21,9 @@ const userSchema = new Schema({
             message: "Please enter a valid email"
         }
     },
+    emailToken : {
+        type: String
+    },
     password : {
         type : String,
         minLength : [3, "Password must be atleast 6 characters long"],

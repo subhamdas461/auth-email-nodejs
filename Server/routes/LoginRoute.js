@@ -26,10 +26,7 @@ router.post("/", async (req,res)=>{
     let isCorrectPass = await bcrypt.compare(password,regUser.password);
 
     isCorrectPass ? 
-        res.json({
-            status: "success",
-            msg:" logged In"
-        }) :
+        res.redirect("/signup") :
         res.status(400).json({
             status:"error",
             msg:"Incorrect Credential"

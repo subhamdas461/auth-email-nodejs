@@ -1,5 +1,4 @@
 
-
 const inputs = document.querySelectorAll(".form-control")
 const showPass = document.querySelector("input[type='checkbox'")
 const submitBtn = document.querySelector("#submit-btn")

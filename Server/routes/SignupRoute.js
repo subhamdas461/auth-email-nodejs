@@ -22,7 +22,7 @@ router.post("/",async (req,res)=>{
     }
     
     let hashPass = await bcrypt.hash(password,7); 
-    const userData = {
+    let userData = {
         name : checkExtraWhiteSpce(name),
         email : checkExtraWhiteSpce(email),
         password : hashPass,
@@ -36,9 +36,11 @@ router.post("/",async (req,res)=>{
         status:"error",
         msg: "Email already exists!"
     })
+    
     let {name:uName, email:uEmail, password: uPass } = userData
-    const token = jwt.sign({uName,uEmail,uPass},process.env.JWT_KEY,{expiresIn: "15m"})
-    console.log(token)
+    const token = jwt.sign({uName,uEmail,uPass},process.env.JWT_KEY,{expiresIn: "10m"})
+    userData.emailToken = token;
+    console.log(token,userData)
     // console.log(uName,uPass,uEmail)
 
     // Send verification mail setup
@@ -46,19 +48,19 @@ router.post("/",async (req,res)=>{
     const msg = {
         to: userData.email,
         from: {
-            name : "JordanHaste.Co",
+            name : "ResumeJH.com",
             email : "cshadow439@gmail.com"
         }, 
         subject: `Verify your account`,
-        text: `Hello ${userData.name}`,
         html: `<p>Hello ${userData.name}</p>
-                <h2>Verify your account</h2>
-                <p>Press the verify button to verify your account</p>
-                <a href="http://${req.headers.host}/verify-account/${token}">Verify</a>
-                <hr>
-                <a href="${req.protocol}://${req.headers.host}/verify-account/${token}">${req.protocol}://${req.headers.host}/verify-account/${token}</a>
-                <p>The link will expire in 15 minutes</p>
-            `    
+        <h2>Verify your account</h2>
+        <p>Press the verify button to verify your account</p>
+        <a href="${req.protocol}://${req.headers.host}/verify-email?token=${token}">Verify</a>
+        <hr>
+        <code>${req.protocol}://${req.headers.host}/verify-email?token=${token}</code>
+        <p>The link will expire in 10 minutes</p>`,
+        text: `Hello ${userData.name} 
+                Copy this link and open in new tab - ${req.protocol}://${req.headers.host}/verify-email?token=${token}`
     }
 
     await sgMail
