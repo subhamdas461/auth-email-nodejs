@@ -8,17 +8,17 @@ router.get("/", async (req,res,next)=>{
         const paramsToken = req.query.token;
         const user = await User.findOne({emailToken : paramsToken})
         if(!user){
-            throw Error("Something went wrong!");
+            throw Error("Something went wrong! Invalid token");
         }
         user.emailToken=null;
         user.isVerified=true;
-        await user.save();
+        await user.updateOne();
         
-        res.json({
+        res.status(200).json({
             status:"success",
             msg:"Email Verified!"
         })
-       
+      
     
     } catch (error) {
         res.status(404).json({

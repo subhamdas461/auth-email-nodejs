@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-// const mongoose = require("mongoose");
+const session = require("express-session")
 const path = require("path");
 const signupRoute = require("./routes/SignupRoute");
 const loginRoute = require("./routes/LoginRoute");
@@ -12,6 +12,17 @@ const app = express();
 
 // db require
 require("./models/db")
+const {SESS_NAME,SESS_MAXAGE, SESS_SECRET} = process.env
+app.use(session({
+    name:SESS_NAME,
+    secret:SESS_SECRET,
+    saveUninitialized:false, 
+    resave:false,
+    cookie:{
+        sameSite:true,
+        maxAge: Number(SESS_MAXAGE)
+    }
+  }))
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -28,9 +39,11 @@ app.get('/signup', function (req, res, next) {
     res.sendFile(path.join(__dirname, "../") + "/public/signup.html");
 }) 
 app.get('/login', function (req, res, next) { 
+
     res.sendFile(path.join(__dirname, "../") + "/public/login.html");
 }) 
 app.get('/dashboard', function (req, res, next) { 
+    console.log(req.session)
     res.sendFile(path.join(__dirname, "../") + "/public/dashboard.html");
 }) 
 app.get('/forgot-password', function (req, res, next) { 

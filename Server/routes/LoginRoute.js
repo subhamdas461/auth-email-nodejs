@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 const router = express.Router();
 
 router.post("/", async (req,res)=>{
-
+   
     const {email,password} = await req.body;
     if(email == "" || password == ""){
         return res.status(400).json({
@@ -26,7 +26,10 @@ router.post("/", async (req,res)=>{
     let isCorrectPass = await bcrypt.compare(password,regUser.password);
 
     isCorrectPass ? 
-        res.redirect("/signup") :
+        res.json({
+            status:"success",
+            msg:"logged in"
+        }) :
         res.status(400).json({
             status:"error",
             msg:"Incorrect Credential"
