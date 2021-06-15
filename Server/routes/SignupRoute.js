@@ -37,8 +37,8 @@ router.post("/",async (req,res)=>{
         msg: "Email already exists!"
     })
     
-    let {name:uName, email:uEmail, password: uPass } = userData
-    const token = jwt.sign({uName,uEmail,uPass},process.env.JWT_KEY,{expiresIn: "10m"})
+    let {name:uName, email:uEmail } = userData
+    const token = jwt.sign({uName,uEmail},process.env.JWT_KEY,{expiresIn: "10m"})
     userData.emailToken = token;
     console.log(token,userData)
     // console.log(uName,uPass,uEmail)

@@ -49,6 +49,9 @@ app.get('/dashboard', function (req, res, next) {
 app.get('/forgot-password', function (req, res, next) { 
     res.sendFile(path.join(__dirname, "../") + "/public/forgotPass.html");
 }) 
+app.get('/success', function (req, res, next) { 
+    res.sendFile(path.join(__dirname, "../") + "/public/success.html");
+}) 
 
 // post signup route
 app.use("/api/user/signup",signupRoute);
